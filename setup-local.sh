@@ -48,13 +48,15 @@ function fail_reset() {
 }
 
 function dependency() {
-  if [ "$#" -ne 2 ]; then
+  if [ "$#" -ne 3 ]; then
     echo "== Internal error: dependency: Invalid number of function parameters =="
     fail_reset
   fi
 
   git clone "$1" "$2"
   cd "$2" || fail_reset
+  git fetch origin "$3"
+  git checkout "$3"
 
   if [ ! -f "gradlew" ]; then
     echo "== Error: dependency: Could not find gradle wrapper in the dependency folder of dependency '$2' =="
@@ -80,8 +82,8 @@ echo "  Installing MaW Dependencies"
 echo "##############################"
 echo ""
 
-dependency "https://github.com/Medaware-org/anterogradia" "anterogradia"
-dependency "https://github.com/Medaware-org/antg-avis" "avis"
+dependency "https://github.com/Medaware-org/anterogradia" "anterogradia" "stable"
+dependency "https://github.com/Medaware-org/antg-avis" "avis" "main"
 
 echo ""
 echo "##############################"
